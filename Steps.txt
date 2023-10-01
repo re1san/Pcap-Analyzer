@@ -1,0 +1,9 @@
+Dependencies required:
+1. Python
+2. Flask - pip install Flask 
+3. Flask-session - pip install Flask-session 
+4. Scapy - pip install scapy
+
+Steps to run the code:
+1. python pcap_flask.py 
+2. Open http://127.0.0.1:5000 in a browser

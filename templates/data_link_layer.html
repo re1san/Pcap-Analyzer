@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data-link layer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="width: 300px; height: 300px;">
+        <canvas id="myPieChart"></canvas>
+    </div>
+    <button onclick="ethernet_func()">Ethernet</button>
+    <button onclick="stp_func()">STP</button>
+    <button onclick="wifi_func()">IEEE 802.11</button>
+    <div id="ethernet_container" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets["ethernet"][0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets["ethernet"][1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div id="stp_container" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets["STP"][0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets["STP"][1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div id="wifi_container" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets["ieee 802.11"][0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets["ieee 802.11"][1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <script>
+        function ethernet_func(){
+            document.getElementById("ethernet_container").style.display = "block";
+            document.getElementById("stp_container").style.display = "none";
+            document.getElementById("wifi_container").style.display = "none";
+        }
+        function stp_func(){
+            document.getElementById("ethernet_container").style.display = "none";
+            document.getElementById("stp_container").style.display = "block";
+            document.getElementById("wifi_container").style.display = "none";
+        }
+        function wifi_func(){
+            document.getElementById("ethernet_container").style.display = "none";
+            document.getElementById("stp_container").style.display = "none";
+            document.getElementById("wifi_container").style.display = "block";
+        }
+        // Get the data from Flask and parse it as JSON
+        var data = {{ numbers|safe }};
+        // Create a pie chart
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Ethernet', 'Spanning tree protocol', 'IEEE 802.11'], // Replace with your labels
+                datasets: [{
+                    data: data,
+                    backgroundColor: ['red', 'blue', 'green'], // Customize colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+    </script>
+</body>
+</html>

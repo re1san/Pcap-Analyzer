@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport layer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="width: 300px; height: 300px;">
+        <canvas id="myPieChart"></canvas>
+    </div>
+    <button onclick="tcp_func()">TCP</button>
+    <button onclick="udp_func()">UDP</button>
+    <div id="tcp_container" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets["tcp"][0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets["tcp"][1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div id="udp_container" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets["udp"][0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets["udp"][1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <script>
+        function tcp_func(){
+            document.getElementById("tcp_container").style.display = "block";
+            document.getElementById("udp_container").style.display = "none";
+        }
+        function udp_func(){
+            document.getElementById("tcp_container").style.display = "none";
+            document.getElementById("udp_container").style.display = "block";
+        }
+        // Get the data from Flask and parse it as JSON
+        var data = {{ numbers|safe }};
+        // Create a pie chart
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['tcp', 'udp'], // Replace with your labels
+                datasets: [{
+                    data: data,
+                    backgroundColor: ['red', 'blue'], // Customize colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+    </script>
+</body>
+</html>

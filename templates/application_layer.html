@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application layer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="width: 300px; height: 300px;">
+        <canvas id="system_port_chart"></canvas>
+        <div><p style="text-align: center;">System Port</p></div>
+    </div>
+    <div style="margin-top: 40px; margin-bottom: 40px;">
+    </div>
+    <div style="width: 300px; height: 300px;">
+        <canvas id="reserved_port_chart"></canvas>
+        <div><p style="text-align: center;">Reserved Port</p></div>
+    </div>
+    <script>
+        var data1 = {{ system_port|tojson|safe }};
+        var labels1 = Object.keys(data1);
+        var counts1 = Object.values(data1);
+        let randomBackgroundColor1 = [];
+        let usedColors = new Set();
+
+        // Function to generate random colors for pie chart
+        let dynamicColors = function() {
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            let color = "rgb(" + r + "," + g + "," + b + ")";
+
+            if (!usedColors.has(color)) {
+                usedColors.add(color);
+                return color;
+            } else {
+                return dynamicColors();
+            }
+        };
+        for (let i in data1) {
+            randomBackgroundColor1.push(dynamicColors());
+        }
+        var ctx1 = document.getElementById('system_port_chart').getContext('2d');
+        var myPieChart1 = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: labels1,
+                datasets: [{
+                    data: counts1,
+                    backgroundColor: randomBackgroundColor1,  
+                    borderColor: "black", 
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+
+        var data2 = {{ destination_port|tojson|safe }};
+        var labels2 = Object.keys(data2);
+        var counts2 = Object.values(data2);
+        var ctx2 = document.getElementById('reserved_port_chart').getContext('2d');
+
+        let randomBackgroundColor2 = [];
+        for (let i in data1) {
+            randomBackgroundColor2.push(dynamicColors());
+        }
+        var myPieChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    data: counts2,
+                    backgroundColor: randomBackgroundColor2,
+                    borderColor: "black", 
+                    borderWidth: 1,  
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+
+    </script>
+</body>
+</html>

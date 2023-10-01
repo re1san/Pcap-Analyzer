@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PCAP Upload</title>
+</head>
+<body>
+    <h1>PCAP File Upload</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload PCAP">
+    </form>
+    {% if filename %}
+        <a href="{{ url_for('view_report', filename=filename) }}">View Report</a>
+    {% endif %}
+</body>
+</html>

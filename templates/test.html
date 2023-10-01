@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Data Example</title>
+</head>
+<body>
+    <h1>JSON Data Example</h1>
+
+    <!-- Display the JSON data -->
+    <pre id="json-data"></pre>
+
+    <!-- JavaScript to parse and display JSON data -->
+    <script>
+        // Get the JSON data from Flask
+        var dataJson = '{{ packets | tojson | safe }}';
+
+        // Parse the JSON string into a JavaScript object
+        var dataObj = JSON.parse(dataJson);
+
+        // Display the parsed data
+        document.getElementById('json-data').textContent = JSON.stringify(dataObj, null, 4);
+    </script>
+</body>
+</html>

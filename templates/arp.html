@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARP</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for val in packets[0] %}
+                    <th>{{ val }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for values in packets[1:] %}
+                <tr>
+                    {% for val in values %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
